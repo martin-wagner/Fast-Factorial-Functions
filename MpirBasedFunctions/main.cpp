@@ -4,6 +4,8 @@
 // Creative Commons Attribution-ShareAlike 3.0
 
 #include <iostream>
+#include <string>
+#include <sstream>
 #include "test.h"
 
 //  static void msg() {                                  std::cout << std::endl <<
@@ -15,6 +17,18 @@
 //  "Writing an implementation for large n! without also paying  " << std::endl <<
 //  "attention to the required space is pointless."                << std::endl;
 //  std::cin.get(); }
+
+
+
+static void FactTestN(ulong n,
+    bool paralSwing, bool paraSchoen, bool primeSwing, bool schoenhage, bool mp_lib)
+{
+    Test::FactorialSanityCheck(1000);
+
+    Test::FactorialBenchmark(n,
+        paralSwing, paraSchoen, primeSwing, schoenhage, mp_lib);
+
+}
 
 static void FactTest()
 {
@@ -51,9 +65,59 @@ static void BinomialTest()
     }
 }
 
+static bool getUserYes(const std::string &question)
+{
+  char yes;
+
+  std::cout << std::endl << question << "? (y/n)" << std::endl;
+  std::cin >> yes;
+  if(yes == 'y' || yes == 'Y') {
+      return true;
+  }
+  return false;
+}
+
+static ulong getUserNumber(const std::string &question)
+{
+   std::string nstr;
+   ulong n;
+
+   std::cout << std::endl << question << "?" << std::endl;
+   std::cin.ignore(); //flush cin
+   std::getline(std::cin, nstr);
+   std::stringstream(nstr) >> n;
+   return n;
+}
+
 int main()
 {
-   char yes; 
+   bool all;
+   bool paralSwing = true;
+   bool paraSchoen = true;
+   bool primeSwing = true;
+   bool schoenhage = true;
+   bool mp_lib = true;
+
+
+   if(getUserYes("Fakultaet zu einer Zahl")) {
+
+       auto n = getUserNumber("Welche");
+
+       all = getUserYes("Alle Berechnungsmethoden");
+       if (!all) {
+         paralSwing = getUserYes("ParalSwing Berechnung");
+         paraSchoen = getUserYes("ParaSchoen Berechnung");
+         primeSwing = getUserYes("PrimeSwing Berechnung");
+         schoenhage = getUserYes("Schoenhage Berechnung");
+         mp_lib = getUserYes("MP-library Berechnung");
+       }
+
+       FactTestN(n,
+           paralSwing, paraSchoen, primeSwing, schoenhage, mp_lib);
+   }
+
+   //originalcode
+   char yes;
 
    std::cout << std::endl << "Factorial Test? (y/n)" << std::endl;
    std::cin >> yes; if(yes == 'y' || yes == 'Y') FactTest();

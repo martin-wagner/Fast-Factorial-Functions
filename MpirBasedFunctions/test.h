@@ -85,49 +85,65 @@ public:
         lmp::Clear(fact);
     }
 
-    static void FactorialBenchmark(ulong n)
+    static void FactorialBenchmark(ulong n,
+        bool paralSwing, bool paraSchoen, bool primeSwing, bool schoenhage, bool mp_lib)
     {
         Xint swing, paraswing, schoen, paraschoen, fact;
 
         std::cout << std::endl << "Test   n =  "
             << n << std::endl;
 
-        std::cout << "ParalSwing: ";
-        {
-            lmp::Init(paraswing); StopWatch::Start();
-            PrimeSwing::ParallelFactorial(paraswing, n);
-            StopWatch::ElapsedTime(); std::cout << std::endl;
-            lmp::Clear(paraswing);
+        if (paralSwing) {
+          std::cout << "ParalSwing: ";
+          {
+              lmp::Init(paraswing); StopWatch::Start();
+              PrimeSwing::ParallelFactorial(paraswing, n);
+              StopWatch::ElapsedTime(); std::cout << std::endl;
+              lmp::Clear(paraswing);
+          }
         }
-        std::cout << "ParaSchoen: ";
-        {
-            lmp::Init(paraschoen); StopWatch::Start();
-            Schoenhage::ParallelFactorial(paraschoen, n);
-            StopWatch::ElapsedTime(); std::cout << std::endl;
-            lmp::Clear(paraschoen);
+        if (paraSchoen) {
+          std::cout << "ParaSchoen: ";
+          {
+              lmp::Init(paraschoen); StopWatch::Start();
+              Schoenhage::ParallelFactorial(paraschoen, n);
+              StopWatch::ElapsedTime(); std::cout << std::endl;
+              lmp::Clear(paraschoen);
+          }
         }
-        std::cout << "PrimeSwing: ";
-        {
-            lmp::Init(swing); StopWatch::Start();
-            PrimeSwing::Factorial(swing, n);
-            StopWatch::ElapsedTime(); std::cout << std::endl;
-            lmp::Clear(swing);
+        if (primeSwing) {
+          std::cout << "PrimeSwing: ";
+          {
+              lmp::Init(swing); StopWatch::Start();
+              PrimeSwing::Factorial(swing, n);
+              StopWatch::ElapsedTime(); std::cout << std::endl;
+              lmp::Clear(swing);
+          }
         }
-        std::cout << "Schoenhage: ";
-        {
-            lmp::Init(schoen); StopWatch::Start();
-            Schoenhage::Factorial(schoen, n);
-            StopWatch::ElapsedTime(); std::cout << std::endl;
-            lmp::Clear(schoen);
+        if (schoenhage) {
+          std::cout << "Schoenhage: ";
+          {
+              lmp::Init(schoen); StopWatch::Start();
+              Schoenhage::Factorial(schoen, n);
+              StopWatch::ElapsedTime(); std::cout << std::endl;
+              lmp::Clear(schoen);
+          }
         }
-        // Calculate factorial using the mp-library
-        std::cout << "MP-library: ";
-        {
-            lmp::Init(fact); StopWatch::Start();
-            lmp::FacUi(fact, n);
-            StopWatch::ElapsedTime(); std::cout << std::endl;
-            lmp::Clear(fact);
+        if (mp_lib) {
+          // Calculate factorial using the mp-library
+          std::cout << "MP-library: ";
+          {
+              lmp::Init(fact); StopWatch::Start();
+              lmp::FacUi(fact, n);
+              StopWatch::ElapsedTime(); std::cout << std::endl;
+              lmp::Clear(fact);
+          }
         }
+    }
+
+    static void FactorialBenchmark(ulong n)
+    {
+      FactorialBenchmark(n, true, true, true, true, true);
     }
 
     static void DoubleFactorialSanityCheck(ulong limit)
